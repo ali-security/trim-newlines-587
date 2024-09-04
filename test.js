@@ -1,7 +1,7 @@
-import test from 'ava';
-import trimNewlines from './index.js';
+var test = require('ava');
+var trimNewlines = require('./index.js');
 
-test('main', t => {
+test('main', function(t) {
     t.is(trimNewlines(''), '');
     t.is(trimNewlines('  '), '  ');
     t.is(trimNewlines('\n\n\r'), '');
@@ -11,7 +11,7 @@ test('main', t => {
     t.is(trimNewlines('\n\r\n\nx\n\r\n\n'), 'x');
 });
 
-test('start', t => {
+test('start', function(t) {
     t.is(trimNewlines.start(''), '');
     t.is(trimNewlines.start('  '), '  ');
     t.is(trimNewlines.start('\n\n\r'), '');
@@ -22,7 +22,7 @@ test('start', t => {
     t.is(trimNewlines.start('x\n\n\r\n\n'), 'x\n\n\r\n\n');
 });
 
-test('end', t => {
+test('end', function(t) {
     t.is(trimNewlines.end(''), '');
     t.is(trimNewlines.end('  '), '  ');
     t.is(trimNewlines.end('\n\n\r'), '');
@@ -33,32 +33,36 @@ test('end', t => {
     t.is(trimNewlines.end('\n\n\r\n\nx'), '\n\n\r\n\nx');
 });
 
-test('main - does not have exponential performance', t => {
-    for (let index = 0; index < 45000; index += 1000) {
-        const string = String(Array.from({length: index}).fill('\n').join('')) + 'a' + String(Array.from({length: index}).fill('\n').join(''));
-        const start = Date.now();
+// Replace Array.from() and let/const with older approaches
+test('main - does not have exponential performance', function(t) {
+    for (var index = 0; index < 45000; index += 1000) {
+        var newlines = Array(index + 1).join('\n');
+        var string = newlines + 'a' + newlines;
+        var start = Date.now();
         trimNewlines(string);
-        const difference = Date.now() - start;
-        t.true(difference < 10, `Execution time: ${difference}`);
+        var difference = Date.now() - start;
+        t.true(difference < 10, 'Execution time: ' + difference);
     }
 });
 
-test('start - does not have exponential performance', t => {
-    for (let index = 0; index < 45000; index += 1000) {
-        const string = String(Array.from({length: index}).fill('\n').join('')) + 'a';
-        const start = Date.now();
+test('start - does not have exponential performance', function(t) {
+    for (var index = 0; index < 45000; index += 1000) {
+        var newlines = Array(index + 1).join('\n');
+        var string = newlines + 'a';
+        var start = Date.now();
         trimNewlines.start(string);
-        const difference = Date.now() - start;
-        t.true(difference < 10, `Execution time: ${difference}`);
+        var difference = Date.now() - start;
+        t.true(difference < 10, 'Execution time: ' + difference);
     }
 });
 
-test('end - does not have exponential performance', t => {
-    for (let index = 0; index < 45000; index += 1000) {
-        const string = 'a' + String(Array.from({length: index}).fill('\n').join(''));
-        const start = Date.now();
+test('end - does not have exponential performance', function(t) {
+    for (var index = 0; index < 45000; index += 1000) {
+        var newlines = Array(index + 1).join('\n');
+        var string = 'a' + newlines;
+        var start = Date.now();
         trimNewlines.end(string);
-        const difference = Date.now() - start;
-        t.true(difference < 10, `Execution time: ${difference}`);
+        var difference = Date.now() - start;
+        t.true(difference < 10, 'Execution time: ' + difference);
     }
 });
