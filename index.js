@@ -1,6 +1,6 @@
-export default function trimNewlines(string) {
-    let start = 0;
-    let end = string.length;
+function trimNewlines(string) {
+    var start = 0;
+    var end = string.length;
 
     while (start < end && (string[start] === '\r' || string[start] === '\n')) {
         start++;
@@ -13,9 +13,9 @@ export default function trimNewlines(string) {
     return (start > 0 || end < string.length) ? string.slice(start, end) : string;
 }
 
-trimNewlines.start = string => {
-    const end = string.length;
-    let start = 0;
+trimNewlines.start = function (string) {
+    var end = string.length;
+    var start = 0;
 
     while (start < end && (string[start] === '\r' || string[start] === '\n')) {
         start++;
@@ -24,8 +24,8 @@ trimNewlines.start = string => {
     return start > 0 ? string.slice(start, end) : string;
 };
 
-trimNewlines.end = string => {
-    let end = string.length;
+trimNewlines.end = function (string) {
+    var end = string.length;
 
     while (end > 0 && (string[end - 1] === '\r' || string[end - 1] === '\n')) {
         end--;
@@ -33,3 +33,5 @@ trimNewlines.end = string => {
 
     return end < string.length ? string.slice(0, end) : string;
 };
+
+module.exports = trimNewlines;
